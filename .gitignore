@@ -1,5 +1,5 @@
 node_modules
 dist
+.gitignore
+.idea
 
-#Conexão com o Banco de Dados
-src/db.ts

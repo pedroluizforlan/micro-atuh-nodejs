@@ -61,5 +61,22 @@ class UserRepository{
         const values = [uuid];
         await db.query<{ uuid: string}>(script, values);
     }
+
+    async findByUsernameAndPassword(username: string, password: string):Promise<UserModel | null> {
+        try{
+            const query = `
+            SELECT uuid, username
+            FROM application_user
+            WHERE usename = $1
+            AND password = crypt($2, 'my_salt')`;
+
+            const values = [username, username]
+            const { rows } = await db.query<UserModel>(query, values)
+            const [user] = rows
+            return user || null;
+        }catch (error){
+            throw new DatabaseError('Error na consulta por username e password', error)
+        }
+    }
 }
 export default new UserRepository();
